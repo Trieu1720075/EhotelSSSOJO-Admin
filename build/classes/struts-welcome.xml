@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    <!--
+		@author: Tran Minh Dang(DangTM)
+		@modify: 14/10/2015
+	-->
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="elcom" />
+	<constant name="struts.multipart.maxSize" value="30000000" />
+	<package name="welcome" namespace="/" extends="struts-default, json-default">
+		<!-- on top important -->
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" default="false" />
+		</result-types>
+
+		<interceptors>
+			<interceptor name="authentication" class="elcom.ehotel.authentication.AuthenticationInterceptor">
+			</interceptor>
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="json">
+					<param name="enableSMD">true</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+	
+		<global-results>
+			<result name="login" type="redirect">/index.elcom</result> 
+			<result name="exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="runtime_exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="error" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="404_exception" type="dispatcher">MODULE-COMMON/view/error404.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="exception"></exception-mapping>
+			<exception-mapping exception="java.lang.Error"
+				result="error"></exception-mapping>
+			<exception-mapping exception="java.lang.RuntimeException"
+				result="runtime_exception"></exception-mapping>
+			<exception-mapping exception="com.opensymphony.xwork2.UnknownHandler"
+				result="404_exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="welcome" class="elcom.ehotel.action.WelcomeAction"
+			method="process">
+			<result name="success" type="tiles">module-welcome</result>
+		</action>
+		<action name="load_language" class="elcom.ehotel.action.WelcomeAction"
+			method="Load_List_Language">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="save_Welcome" class="elcom.ehotel.action.WelcomeAction"
+			method="save_Welcome">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="add_language" class="elcom.ehotel.action.WelcomeAction"
+			method="add_language">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="delete_language" class="elcom.ehotel.action.WelcomeAction"
+			method="delete_language">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="Load_List_Background" class="elcom.ehotel.action.WelcomeAction"
+			method="Load_List_Background">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="load_data_content" class="elcom.ehotel.action.WelcomeAction"
+			method="load_data_content">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="Delete_List_Background" class="elcom.ehotel.action.WelcomeAction"
+			method="Delete_List_Background">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="add_background" class="elcom.ehotel.action.WelcomeAction"
+			method="add_background">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="save_logo" class="elcom.ehotel.action.WelcomeAction"
+			method="save_logo">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="save_logo_small" class="elcom.ehotel.action.WelcomeAction"
+			method="save_logo_small">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="delete_file" class="elcom.ehotel.action.WelcomeAction"
+			method="delete_file">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="save_two_logo" class="elcom.ehotel.action.WelcomeAction"
+			method="save_two_logo">
+			<result name="success" type="json"></result>
+		</action>
+		
+		<action name="tool-welcome" class="elcom.ehotel.action.WelcomeAction"
+			method="process_tool_welcome">
+			<result name="success" type="tiles">tool-welcome</result>
+		</action>
+		<action name="getBirthdayHtml" class="elcom.ehotel.action.WelcomeAction"
+			method="getBirthdayHtml">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="saveBirthdayHtml" class="elcom.ehotel.action.WelcomeAction"
+			method="saveBirthdayHtml">
+			<result name="success" type="json"></result>
+		</action>
+	</package>
+</struts>

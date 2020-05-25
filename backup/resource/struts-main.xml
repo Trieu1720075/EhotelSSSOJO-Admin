@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    <!--
+		@author: Tran Minh Dang(DangTM)
+		@modify: 14/10/2015
+	-->
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="elcom" />
+	<constant name="struts.multipart.maxSize" value="30000000" />
+	<package name="main" namespace="/" extends="struts-default, json-default">
+		<!-- on top important -->
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" default="false" />
+		</result-types>
+
+		<interceptors>
+			<interceptor name="authentication" class="elcom.ehotel.authentication.AuthenticationInterceptor">
+			</interceptor>
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="json">
+					<param name="enableSMD">true</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+	
+		<global-results>
+			<result name="login" type="redirect">/index.elcom</result> 
+			<result name="exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="runtime_exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="error" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="404_exception" type="dispatcher">MODULE-COMMON/view/error404.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="exception"></exception-mapping>
+			<exception-mapping exception="java.lang.Error"
+				result="error"></exception-mapping>
+			<exception-mapping exception="java.lang.RuntimeException"
+				result="runtime_exception"></exception-mapping>
+			<exception-mapping exception="com.opensymphony.xwork2.UnknownHandler"
+				result="404_exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="main" class="elcom.ehotel.action.MainAction"
+			method="process">
+			<result name="success" type="tiles">module-main</result>
+		</action>
+		<action name="Load_List_Main" class="elcom.ehotel.action.MainAction"
+			method="Load_List_Main">			
+			<result name="success" type="json"></result>
+		</action>
+		<action name="save_main" class="elcom.ehotel.action.MainAction"
+			method="save_main">			
+			<result name="success" type="json"></result>
+		</action>
+		<action name="main-children" class="elcom.ehotel.action.MainAction"
+			method="process">
+			<result name="success" type="tiles">module-main-children</result>
+		</action>
+		<action name="main-retaurent" class="elcom.ehotel.action.MainAction"
+			method="process">
+			<result name="success" type="tiles">module-main-retaurent</result>
+		</action>
+		
+		<action name="myhotel" class="elcom.ehotel.action.MainAction"
+			method="getMyHotel">
+			<result name="success" type="tiles">myhotel</result>
+		</action>
+		
+		<action name="main-message" class="elcom.ehotel.action.MessageAction"
+			method="process">
+			<result name="success" type="tiles">module-message</result>
+		</action>
+		
+		<action name="mystay" class="elcom.ehotel.action.MainAction"
+			method="getMyStay">
+			<result name="success" type="tiles">mystay</result>
+		</action>
+		
+		<action name="module-main-exchange" class="elcom.ehotel.action.MainAction"
+			method="getExchangeRate">
+			<result name="success" type="tiles">module-main-exchange</result>
+		</action>
+		
+		<action name="module-main-dining" class="elcom.ehotel.action.MainAction"
+			method="getDining">
+			<result name="success" type="tiles">module-main-dining</result>
+		</action>
+	
+		<action name="module-main-dining-childrent" class="elcom.ehotel.action.MainAction"
+			method="getDiningChildrent">
+			<result name="success" type="tiles">module-main-dining-childrent</result>
+		</action>
+	</package>
+</struts>

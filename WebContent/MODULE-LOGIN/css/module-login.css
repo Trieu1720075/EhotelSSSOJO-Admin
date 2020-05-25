@@ -1,0 +1,38 @@
+.panel-primary>.panel-heading {
+	color: #fff;
+	background-color: #f36f21;
+	border-color: #f36f21;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #f36f21;
+    border-color: #f36f21;
+}
+
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #f36f21;
+    border-color: #f36f21;
+}
+
+.btn-primary:FOCUS {
+    color: #fff;
+    background-color: #f36f21;
+    border-color: #f36f21;
+}
+
+.panel-primary {
+    border-color: #f36f21;
+}
+.img-loading {
+	width: 73px;
+	height: 73px;
+	border-radius: 73px;
+	background-color: #4d4d4d;
+	vertical-align: middle;
+	position: absolute;
+	top: 45%;
+}
+

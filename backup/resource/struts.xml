@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    <!--
+		@author: Tran Minh Dang(DangTM)
+		@modify: 14/10/2015
+	-->
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="elcom" />
+	<constant name="struts.multipart.maxSize" value="30000000" />
+	<constant name="struts.custom.i18n.resources" value="item" />
+	<package name="ehotel" namespace="/" extends="struts-default, json-default">
+		<!-- on top important -->
+		<result-types>
+			<result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" default="false" />
+		</result-types>
+
+		<interceptors>
+			<interceptor name="authentication" class="elcom.ehotel.authentication.AuthenticationInterceptor">
+			</interceptor>
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="json">
+					<param name="enableSMD">true</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+	
+		<global-results>
+			<result name="login" type="redirect">/index.elcom</result> 
+			<result name="exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="runtime_exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="error" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="404_exception" type="dispatcher">MODULE-COMMON/view/error404.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="exception"></exception-mapping>
+			<exception-mapping exception="java.lang.Error"
+				result="error"></exception-mapping>
+			<exception-mapping exception="java.lang.RuntimeException"
+				result="runtime_exception"></exception-mapping>
+			<exception-mapping exception="com.opensymphony.xwork2.UnknownHandler"
+				result="404_exception"></exception-mapping>
+		</global-exception-mappings>
+		
+		<action name="index" class="elcom.ehotel.action.LoginAction"
+			method="login">
+			<result name="login" type="tiles">login</result>
+		</action>
+		
+		<action name="authentication" class="elcom.ehotel.action.LoginAction"
+			method="authentication">
+			<result name="success" type="json"></result>
+		</action>
+		
+		<action name="login" class="elcom.ehotel.action.LoginAction"
+			method="logout">
+			<result name="login" type="redirect">/index.elcom</result>
+		</action>
+		
+		<action name="home" class="elcom.ehotel.action.LoginAction"
+			method="home">
+			<result name="success" type="tiles">home</result>
+		</action>
+		
+		<action name="config" class="elcom.ehotel.action.LoginAction"
+			method="getConfig">
+			<result name="success" type="tiles">config</result>
+		</action>
+		
+		<action name="upload-file" class="elcom.ehotel.action.UploadAction"
+            method="uploadFile">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="upload-file-crop" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileCrop">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="upload-file-video" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileVideo">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="upload-file-audio" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileAudio">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="upload-file-myhotel" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileMyHotel">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="upload_file_action" class="elcom.ehotel.action.UploadFileAction"
+			method="uploadFile">			
+			<result name="success" type="json"></result>
+		</action>
+		
+		 <action name="upload_file_main" class="elcom.ehotel.action.UploadFileAction"
+			method="upload_file_main">			
+			<result name="success" type="json"></result>
+		</action>
+		
+		 <action name="upload_file_exchange" class="elcom.ehotel.action.UploadFileAction"
+			method="upload_file_exchange">			
+			<result name="success" type="json"></result>
+		</action>
+		
+		<action name="upload_file_prmotion" class="elcom.ehotel.action.UploadFileAction"
+			method="upload_file_prmotion">			
+			<result name="success" type="json"></result>
+		</action>
+		
+		<action name="upload_file_dining" class="elcom.ehotel.action.UploadFileAction"
+			method="upload_file_dining">			
+			<result name="success" type="json"></result>
+		</action>
+	</package>
+	<include file="struts-tool.xml"></include>
+	<include file="struts-welcome.xml"></include>
+	<include file="struts-main.xml"></include>
+	<include file="struts-movies.xml"></include>
+	<include file="struts-musicvideo.xml"></include>
+	<include file="struts-music.xml"></include>
+	<include file="struts-live-tv.xml"></include>
+	<include file="struts-promotion.xml"></include>
+</struts>

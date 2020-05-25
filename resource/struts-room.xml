@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    <!--
+		@author: Tran Minh Dang(DangTM)
+		@modify: 14/10/2015
+	-->
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="elcom" />
+	<constant name="struts.multipart.maxSize" value="30000000" />
+	<package name="room" namespace="/" extends="struts-default, json-default">
+		<!-- on top important -->
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" default="false" />
+		</result-types>
+
+		<interceptors>
+			<interceptor name="authentication" class="elcom.ehotel.authentication.AuthenticationInterceptor">
+			</interceptor>
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="json">
+					<param name="enableSMD">true</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+	
+		<global-results>
+			<result name="login" type="redirect">/index.elcom</result> 
+			<result name="exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="runtime_exception" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="error" type="dispatcher">MODULE-COMMON/view/error.jsp</result>
+			<result name="404_exception" type="dispatcher">MODULE-COMMON/view/error404.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="exception"></exception-mapping>
+			<exception-mapping exception="java.lang.Error"
+				result="error"></exception-mapping>
+			<exception-mapping exception="java.lang.RuntimeException"
+				result="runtime_exception"></exception-mapping>
+			<exception-mapping exception="com.opensymphony.xwork2.UnknownHandler"
+				result="404_exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="room" class="elcom.ehotel.action.RoomAction"
+			method="process">
+			<result name="success" type="tiles">module-room</result>
+		</action>
+
+		
+		
+	</package>
+</struts>

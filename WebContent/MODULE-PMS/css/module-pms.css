@@ -1,0 +1,12 @@
+
+
+div.dataTables_wrapper div.dataTables_length {
+    width: 20%;
+    float: left;
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    text-align: right;
+    width: 20%;
+    float: right;
+}
