@@ -9,6 +9,7 @@ var $checkAjaxShow = true;
 var $langId = 0;
 var $ip="http://"+location.hostname+":80/Image/";
 var $pathLiveTV = $ip+"Livetv/";
+var $pathMode = $ip+"Mode/";
 var $pathVideo = $ip+"Video/";
 var $pathMusic = $ip+"Music/";
 var $path_image_flag = $ip+"Icon/";
@@ -266,9 +267,7 @@ function createItemList(idParent, className, obj, path) {
 	div.setAttribute("data-id", obj.id);
 	div.setAttribute('data-name', obj.name);
 	div.setAttribute('data-image', obj.image);
-	div.setAttribute('data-index', obj.index);
-	div.setAttribute('data-status', obj.status);
-	
+
 	var img = document.createElement("img");
 	var date = new Date().getTime();
 	img.src = path + obj.image + '?param=' + date;

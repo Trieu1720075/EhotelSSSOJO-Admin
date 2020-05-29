@@ -5,6 +5,7 @@ var KEY_PERMISSION = {
 	movie : 'mng-movie',
 	music : 'mng-music',
 	livetv : 'mng-livetv',
+	modetv : 'mng-modetv',
 	ftp : 'mng-ftp',
 	room : 'mng-room',
 	user : 'mng-user',

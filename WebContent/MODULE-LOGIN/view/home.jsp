@@ -65,6 +65,14 @@
 			    		<img src="MODULE-COMMON/images/items/livetv.png" style="height: 150px; width: 100%">
 			    	</a>
 		    	</div>
+		    	<div class="col-md-3 mng-modetv">
+			    	<a class="thumbnail text-center" href="${pageContext.request.contextPath}/modetv/modetv.elcom">
+			    		<div class="caption">
+					 		<h4><s:property value="getText('menu.modetv')" /></h4>
+					 	</div>	
+			    		<img src="MODULE-COMMON/images/items/ftp.png" style="height: 150px; width: 100%">
+			    	</a>
+		    	</div>
 		    	<div class="col-md-3 mng-ftp">
 			    	<a class="thumbnail text-center" href="${pageContext.request.contextPath}/config.elcom">
 			    		<div class="caption">

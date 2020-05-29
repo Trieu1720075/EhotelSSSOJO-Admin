@@ -48,6 +48,16 @@
 		<s:hidden id="livetv-delete-fail" value="%{getText('livetv.delete.item.fail')}"/>
 		<s:hidden id="livetv-delete-duplicate" value="%{getText('livetv.delete.item.duplicate')}"/>
 		
+		<s:hidden id="modetv-create-title" value="%{getText('modetv.create.item.title')}"/>
+		<s:hidden id="modetv-edit-title" value="%{getText('modetv.edit.item.title')}"/>
+		<s:hidden id="modetv-create-success" value="%{getText('modetv.create.item.success')}"/>
+		<s:hidden id="modetv-create-fail" value="%{getText('modetv.create.item.fail')}"/>
+		<s:hidden id="modetv-edit-success" value="%{getText('modetv.edit.item.success')}"/>
+		<s:hidden id="modetv-edit-fail" value="%{getText('modetv.edit.item.fail')}"/>
+		<s:hidden id="modetv-delete-success" value="%{getText('modetv.delete.item.success')}"/>
+		<s:hidden id="modetv-delete-fail" value="%{getText('modetv.delete.item.fail')}"/>
+		<s:hidden id="modetv-delete-duplicate" value="%{getText('modetv.delete.item.duplicate')}"/>
+		
 		<s:hidden id="movies-create-title" value="%{getText('movies.create.item.title')}"/>
 		<s:hidden id="movies-edit-title" value="%{getText('movies.edit.item.title')}"/>
 		<s:hidden id="movies-create-success" value="%{getText('movies.create.item.success')}"/>

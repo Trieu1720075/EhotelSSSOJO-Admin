@@ -62,6 +62,54 @@
 						</div>
 					
 					</div>
+					
+					<div class="tab-pane" id="mode-livetv" style="margin-bottom:15px">
+						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div id="div-list-group-mode" class="list-group text-left"></div>
+								</div>
+								<div class="panel-footer text-center">
+									<button class="hidden btn btn-primary btn-xs" type="button" onclick="openNewSubjectDialog()">
+										<i class="fa fa-plus-circle"></i> <s:property value="getText('button.add')"/>
+									</button>
+									<button class="hidden btn btn-default btn-xs" type="button" onclick="openEditSubjectDialog()">
+										<i class="fa fa-pencil-square-o"></i> <s:property value="getText('button.edit')"/>
+									</button>
+									<button class="hidden btn btn-danger btn-xs" type="button" onclick="openDeleteSubjectDialog()">
+										<i class="fa fa-trash"></i> <s:property value="getText('button.delete')"/>
+									</button>
+								</div>
+							</div>
+						</div>
+			
+						<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+							<div id="media-mode" class="tab-pane" role="tabpanel">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 panel panel-default">
+									<button class="btn btn-primary btn-xs" type="button" onclick="openNewDialog()" style="margin-top: 15px">
+										<i class="fa fa-plus-circle"></i> <s:property value="getText('button.add')"/>
+									</button>
+									<table id="table-item-mode" class="table text-left">
+										<thead>
+											<tr>
+												<th width="10%"><s:property value="getText('item.no')"/></th>
+												<th width="25%"><s:property value="getText('item.name')"/></th>
+												<th width="25%"><s:property value="getText('item.address')"/></th>
+												<th width="10%"><s:property value="getText('item.image')"/></th>
+												<th width="10%"><s:property value="getText('item.status')"/></th>
+												<th width="10%"><s:property value="getText('item.idx')"/></th>
+												<th width="10%"><s:property value="getText('item.action')"/></th>
+											</tr>
+										</thead>
+										<tbody id="tbody-item-mode">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
 					<div class="tab-pane" id="channel-video" style="margin-bottom:20px">
 						<div class="col-md-10 col-md-offset-1">
 							<div class="panel panel-default">
@@ -387,7 +435,6 @@
 		</div>
 	</div>
 </div>
-
 
 <!--MyHotel Item Dialog -->
 <div id="myhotel-item-dialog" class="modal fade" role="dialog">

@@ -4,53 +4,64 @@
 	       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <!-- @author: Tran Minh Dang(DangTM) @day: 25/12/2015 -->
 <tiles-definitions>
-	<definition name="login" template="/MODULE-LOGIN/view/module-login.jsp">
+	<definition name="login"
+		template="/MODULE-LOGIN/view/module-login.jsp">
 		<put-attribute name="title" value="Login" />
 	</definition>
-	<definition name="baselayout" template="/MODULE-COMMON/view/common.jsp">
-		<put-attribute name="header" value="/MODULE-COMMON/view/header.jsp" />
-		<put-attribute name="banner" value="/MODULE-COMMON/view/banner.jsp" />
-		<put-attribute name="footer" value="/MODULE-COMMON/view/footer.jsp" />
-		<put-attribute name="message" value="/MODULE-COMMON/view/message.jsp" />
+	<definition name="baselayout"
+		template="/MODULE-COMMON/view/common.jsp">
+		<put-attribute name="header"
+			value="/MODULE-COMMON/view/header.jsp" />
+		<put-attribute name="banner"
+			value="/MODULE-COMMON/view/banner.jsp" />
+		<put-attribute name="footer"
+			value="/MODULE-COMMON/view/footer.jsp" />
+		<put-attribute name="message"
+			value="/MODULE-COMMON/view/message.jsp" />
 	</definition>
 
 	<definition name="home" extends="baselayout">
 
-        <put-attribute name="title" value="Home" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-LOGIN/view/home.jsp" />
-    </definition>
-	
-    <definition name="module-tool-add" extends="baselayout">
-        <put-attribute name="title" value="Tool" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-TOOL/view/module-tool-add.jsp" />
-    </definition>
-     <definition name="module-tool-edit" extends="baselayout">
-        <put-attribute name="title" value="Tool" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-TOOL/view/module-tool-edit.jsp" />
-    </definition>
-  <!--   <definition name="module-welcome" template="/MODULE-WELCOME/view/module-welcome.jsp">
-		<put-attribute name="title" value="welcome" />
-	</definition> -->
-    
-     <definition name="module-welcome" extends="baselayout">
-        <put-attribute name="title" value="welcome" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-WELCOME/view/module-welcome.jsp" />
-    </definition> 
-    
- 	<definition name="module-login" extends="baselayout">
 		<put-attribute name="title" value="Home" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-LOGIN/view/home.jsp" />
-	</definition> 
-	
+		<put-attribute name="content"
+			value="/MODULE-LOGIN/view/home.jsp" />
+	</definition>
+
+	<definition name="module-tool-add" extends="baselayout">
+		<put-attribute name="title" value="Tool" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-TOOL/view/module-tool-add.jsp" />
+	</definition>
+	<definition name="module-tool-edit" extends="baselayout">
+		<put-attribute name="title" value="Tool" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-TOOL/view/module-tool-edit.jsp" />
+	</definition>
+	<!-- <definition name="module-welcome" template="/MODULE-WELCOME/view/module-welcome.jsp"> 
+		<put-attribute name="title" value="welcome" /> </definition> -->
+
+	<definition name="module-welcome" extends="baselayout">
+		<put-attribute name="title" value="welcome" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-WELCOME/view/module-welcome.jsp" />
+	</definition>
+
+	<definition name="module-login" extends="baselayout">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-LOGIN/view/home.jsp" />
+	</definition>
+
 	<definition name="config" extends="baselayout">
 		<put-attribute name="title" value="Config FTP" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-CONFIG/view/config.jsp" />
+		<put-attribute name="content"
+			value="/MODULE-CONFIG/view/config.jsp" />
 	</definition>
 
 	<definition name="module-tool-add" extends="baselayout">
@@ -70,116 +81,143 @@
 	<definition name="movies" extends="baselayout">
 		<put-attribute name="title" value="Movies" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-MOVIES/view/movies.jsp" />
+		<put-attribute name="content"
+			value="/MODULE-MOVIES/view/movies.jsp" />
 	</definition>
-	
+
 	<definition name="musicvideo" extends="baselayout">
 		<put-attribute name="title" value="Music Video" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-MUSICVIDEO/view/musicvideo.jsp" />
+		<put-attribute name="content"
+			value="/MODULE-MUSICVIDEO/view/musicvideo.jsp" />
 	</definition>
 
 	<definition name="music" extends="baselayout">
 		<put-attribute name="title" value="Music" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-MUSIC/view/music.jsp" />
+		<put-attribute name="content"
+			value="/MODULE-MUSIC/view/music.jsp" />
 	</definition>
 
 	<definition name="livetv" extends="baselayout">
 		<put-attribute name="title" value="Live TV" />
 		<put-attribute name="banner" value="" />
-		<put-attribute name="content" value="/MODULE-LIVETV/view/livetv.jsp" />
+		<put-attribute name="content"
+			value="/MODULE-LIVETV/view/livetv.jsp" />
+	</definition>
+
+	<definition name="modetv" extends="baselayout">
+		<put-attribute name="title" value="Mode TV" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MODETV/view/modetv.jsp" />
+	</definition>
+
+	<definition name="module-main" extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-main.jsp" />
+	</definition>
+
+	<definition name="module-main-children" extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-main-children.jsp" />
+	</definition>
+
+	<definition name="module-main-retaurent"
+		extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-main-retaurent.jsp" />
 	</definition>
 
 
-     <definition name="module-main" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-main.jsp" />
-    </definition> 
-    
-    <definition name="module-main-children" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-main-children.jsp" />
-    </definition> 
-    
-    <definition name="module-main-retaurent" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-main-retaurent.jsp" />
-    </definition> 
-    
+	<definition name="module-message" extends="baselayout">
+		<put-attribute name="title" value="message" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MESSAGE/view/module-message.jsp" />
+	</definition>
 
-    <definition name="module-message" extends="baselayout">
-        <put-attribute name="title" value="message" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MESSAGE/view/module-message.jsp" />
-    </definition> 
+	<definition name="myhotel" extends="baselayout">
+		<put-attribute name="title" value="My Hotel" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/myhotel.jsp" />
+	</definition>
 
-    <definition name="myhotel" extends="baselayout">
-        <put-attribute name="title" value="My Hotel" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/myhotel.jsp" />
-    </definition> 
-    
-    <definition name="mystay" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/mystay.jsp" />
-    </definition> 
+	<definition name="mystay" extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/mystay.jsp" />
+	</definition>
 
-	 <definition name="module-main-exchange" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-exchange-rate.jsp" />
-    </definition> 
-    
-    <definition name="promotion_footer" extends="baselayout">
-        <put-attribute name="title" value="promotion" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-PROMOTION/view/module-promotion.jsp" />
-    </definition> 
-    
-     <definition name="module-main-dining" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-main-dining.jsp" />
-    </definition> 
-    
-     <definition name="module-main-dining-childrent" extends="baselayout">
-        <put-attribute name="title" value="main" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-MAIN/view/module-main-dining-childrent.jsp" />
-    </definition> 
-    
-    <definition name="module-room" extends="baselayout">
-        <put-attribute name="title" value="room" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-ROOM/view/module-room.jsp" />
-    </definition>
-    
-    <definition name="module-user" extends="baselayout">
-        <put-attribute name="title" value="user" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-USER/view/module-user.jsp" />
-    </definition>
-    
-    <definition name="change_password" extends="baselayout">
-        <put-attribute name="title" value="Change Password" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-USER/view/change-password.jsp" />
-    </definition>
-    
-    <definition name="process_pms" extends="baselayout">
-        <put-attribute name="title" value="pms" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-PMS/view/module-pms.jsp" />
-    </definition>
-    
-      <definition name="tool-welcome" extends="baselayout">
-        <put-attribute name="title" value="welcome" />
-        <put-attribute name="banner" value="" />
-        <put-attribute name="content" value="/MODULE-WELCOME/view/tool-welcome.jsp" />
-    </definition>
+	<definition name="module-main-exchange" extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-exchange-rate.jsp" />
+	</definition>
+
+	<definition name="promotion_footer" extends="baselayout">
+		<put-attribute name="title" value="promotion" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-PROMOTION/view/module-promotion.jsp" />
+	</definition>
+
+	<definition name="module-main-dining" extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-main-dining.jsp" />
+	</definition>
+
+	<definition name="module-main-dining-childrent"
+		extends="baselayout">
+		<put-attribute name="title" value="main" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-MAIN/view/module-main-dining-childrent.jsp" />
+	</definition>
+
+	<definition name="module-room" extends="baselayout">
+		<put-attribute name="title" value="room" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-ROOM/view/module-room.jsp" />
+	</definition>
+
+	<definition name="module-user" extends="baselayout">
+		<put-attribute name="title" value="user" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-USER/view/module-user.jsp" />
+	</definition>
+
+	<definition name="change_password" extends="baselayout">
+		<put-attribute name="title" value="Change Password" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-USER/view/change-password.jsp" />
+	</definition>
+
+	<definition name="process_pms" extends="baselayout">
+		<put-attribute name="title" value="pms" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-PMS/view/module-pms.jsp" />
+	</definition>
+
+	<definition name="tool-welcome" extends="baselayout">
+		<put-attribute name="title" value="welcome" />
+		<put-attribute name="banner" value="" />
+		<put-attribute name="content"
+			value="/MODULE-WELCOME/view/tool-welcome.jsp" />
+	</definition>
 </tiles-definitions>

@@ -78,6 +78,24 @@ function getItem() {
 	});
 }
 
+function getModeItem() {
+	$checkAjaxShow = true;
+	$.ajax({
+		type : "GET",
+		url : $pathWebService + "mode",
+		cache : false,
+		data : {
+			action : "getchannelmode",
+			id : -1,
+		},
+		success : function(response) {
+			resetDataTable("table-item-mode");
+			createTableModeItem(response);
+			createDataTable("table-item-mode");
+		}
+	});
+}
+
 function getItemOutSubject() {
 	$.ajax({
 		type : "GET",
@@ -143,12 +161,72 @@ function createTableItem(data) {
 	});
 }
 
+function createTableModeItem(data) {
+	$listItem = [];
+	$listItemIn = [];
+	$("#tbody-item-mode").empty();
+	var myBody = document.getElementById("tbody-item-mode");
+	$.each(data, function(i, item) {
+		if (i == 0) {
+			$maxIndex = parseInt(item.maxindex);
+		}
+		$listItem.push(item);
+		$listItemIn.push(item);
+		var id = item.id;
+		var name = unescape(item.name);
+		var link = unescape(item.link);
+		var image = item.image;
+		var status = item.status;
+		var idx = item.index;
+		
+		var row = myBody.insertRow(myBody.rows.length);
+		var col1 = row.insertCell(0);
+		col1.innerHTML = i + 1;
+		
+		var col2 = row.insertCell(1);
+		col2.innerHTML = name;
+		
+		var col3 = row.insertCell(2);
+		col3.innerHTML = link;
+		
+		var col4 = row.insertCell(3);
+		col4.appendChild(createItemImage($pathLiveTV + image));
+		
+		var col5 = row.insertCell(4);
+		col5.appendChild(createItemModeInvisible_(id,name,link,image,status,idx));
+		
+		var col6 = row.insertCell(5);
+		col6.innerHTML = idx;
+		
+		var col7 = row.insertCell(6);
+		var btnEdit = createButton(1);
+		btnEdit.setAttribute("onclick", "openEditDialog('" + id + "','" + name + "', '" + link + "', '" + image + "', '" + status + "', '" + idx + "')");
+		var btnDelete = createButton(2);
+		btnDelete.setAttribute("onclick", "openDeleteDialog('" + id + "', '" + name + "')");
+		col7.appendChild(btnEdit);
+		col7.appendChild(btnDelete);
+	});
+}
+
 
 function createItemInvisible_(id,name,link,image,status,idx) {
 	var str = "'" + id + "','" + name+ "','" + link+ "','" + image+"','"+status+"','"+idx+"'";
 	var button = document.createElement("button"); 
 	button.setAttribute('type', 'button');
 	button.setAttribute('onclick', 'changeStatusData('+str+')');
+	if (status == 1) {
+		button.className = "status-active";
+	} else {
+		button.className = "status-inactive";
+	}
+	return button;
+}
+
+function createItemModeInvisible_(id,name,link,image,status,idx) {
+	var str = "'" + id + "','" + name+ "','" + link+ "','" + image+"','"+status+"','"+idx+"'";
+	var button = document.createElement("button"); 
+	button.setAttribute('type', 'button');
+	button.setAttribute('onclick', 'changeStatusModeData('+str+')');
 	if (status == 1) {
 		button.className = "status-active";
 	} else {
@@ -182,34 +260,43 @@ function changeStatusData(id,name,link,image,status,idx){
 			closeDialog("item-dialog");
 			if (response > 0) {
 				getItem();
+				getModeItem();
 				//showMessageSuccess(getValueField("livetv-edit-success"));
 			} else {
 				showMessageError(getValueField("livetv-edit-fail"));
 			}
 		}
 	});
-	
-/*	$.ajax({
+}
+
+function changeStatusModeData(id,name,link,image,status,idx){
+	if(status=="1" || status==1){
+		status=0;
+	}else{
+		status=1;
+	}
+	$.ajax({
 		type : "POST",
-		url : $pathWebService + "pmsinfo",
+		url : $pathWebService + "mode",
 		cache : false,
-		async : true,
 		data : {
-			action : 'editcontentinfo',		
-			contentid: id,
-			name:      name,
-			invisible:status,
-			langid:langid
-		},		
-        success: function(response){       	
-        	//alert("response editcontentinfo: "+response);
-        	getcontent_html();
-        	$("#item-html").hide();	
-        },
-        error: function(x,e){
-        	showMessageError("error occur");
-        } 
-    });	*/
+			action : 'changestatus',
+			modeid : "-1",
+			channelid : id,
+			status : status,
+			langid: $langId,
+		},
+		success : function(response) {
+			closeDialog("item-dialog");
+			if (response > 0) {
+				getItem();
+				getModeItem();
+				//showMessageSuccess(getValueField("livetv-edit-success"));
+			} else {
+				showMessageError(getValueField("livetv-edit-fail"));
+			}
+		}
+	});
 }
 
 function createTableItemIn() {
@@ -335,6 +422,7 @@ function createItem(fileName) {
 			closeDialog("item-dialog");
 			if (response > 0) {
 				getItem();
+				getModeItem();
 				//showMessageSuccess(getValueField("livetv-create-success"));
 			} else {
 				showMessageError(getValueField("livetv-create-fail"));
@@ -363,6 +451,7 @@ function editItem(fileName) {
 			closeDialog("item-dialog");
 			if (response > 0) {
 				getItem();
+				getModeItem();
 				//showMessageSuccess(getValueField("livetv-edit-success"));
 			} else {
 				showMessageError(getValueField("livetv-edit-fail"));
@@ -384,6 +473,7 @@ function deleteItem() {
 			closeDialog("item-delete-dialog");
 			if (response > 0) {
 				getItem();
+				getModeItem();
 				//showMessageSuccess(getValueField("livetv-delete-success"));
 			} else if (response == -2) {
 				showMessageError(getValueField("livetv-delete-duplicate"));

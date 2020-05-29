@@ -1,11 +1,11 @@
 var $subjectId = 0;
 var $subjectName = "";
 var $subjectImage = "";
-var $subjectStatus = 0;
 var $typeMode = 0;
 
 $(function() {
 	getSubject(-1);
+	getListMode(-1);
 	getAnnounceLivetv();
 	$("#subject-upload-form").submit(function() {
 		var name = $("#subject-name").val();
@@ -18,35 +18,35 @@ $(function() {
 			return true;
 		}
 	});
-	
+
 	var bar = $('.progress-bar');
 	var percent = $('.progress-percent');
-	
+
 	$("#subject-upload-form").ajaxForm({
-	    beforeSend: function() {
-	    	var file =  document.getElementById("subject-file").files[0]; 
-	    	if (file != null) {
-	    		$(".process-upload").show();
-	    	}
-	        var percentVal = '0%';
-	        bar.width(percentVal);
-	        percent.html(percentVal);
-	    },
-	    uploadProgress: function(event, position, total, percentComplete) {
-	        var percentVal = percentComplete + '%';
-	        bar.width(percentVal);
-	        percent.html(percentVal + " " + getValueField("item-uploading"));
-	        if (percentComplete == 100) {
-	        	percent.html(percentVal + " " + getValueField("item-saving"));
-	        }
-	    },
-	    success: function(response) {
-	        var percentVal = '100%';
-	        bar.width(percentVal);
-	        percent.html(percentVal + " " + getValueField("item-complete"));
-	        
-	        if (response.status == 'SUCCESS') {
-        		if ($typeMode == 1) {
+		beforeSend : function() {
+			var file = document.getElementById("subject-file").files[0];
+			if (file != null) {
+				$(".process-upload").show();
+			}
+			var percentVal = '0%';
+			bar.width(percentVal);
+			percent.html(percentVal);
+		},
+		uploadProgress : function(event, position, total, percentComplete) {
+			var percentVal = percentComplete + '%';
+			bar.width(percentVal);
+			percent.html(percentVal + " " + getValueField("item-uploading"));
+			if (percentComplete == 100) {
+				percent.html(percentVal + " " + getValueField("item-saving"));
+			}
+		},
+		success : function(response) {
+			var percentVal = '100%';
+			bar.width(percentVal);
+			percent.html(percentVal + " " + getValueField("item-complete"));
+
+			if (response.status == 'SUCCESS') {
+				if ($typeMode == 1) {
 					createSubject(response.fileName);
 				} else {
 					editSubject(response.fileName);
@@ -55,10 +55,8 @@ $(function() {
 				closeDialog("subject-dialog");
 				showMessageError(getValueField("item-upload-fail"));
 			}
-	    }
+		}
 	});
-	
-
 });
 
 function getSubject(mode) {
@@ -80,12 +78,12 @@ function getSubject(mode) {
 						name : unescape(item.name),
 						image : unescape(item.image),
 						index : item.oderby,
-						modifyDate : item.modifyDate,
-						status : item.status
+						modifyDate : item.modifyDate
 					};
-					createItemList("div-list-group", "item-subject", obj, $pathLiveTV, 2);
+					createItemList("div-list-group", "item-subject", obj,
+							$pathLiveTV);
 				});
-				
+
 				if (mode == 1) {
 					$('.item-subject:last').addClass("item-selected");
 				} else if (mode == 2) {
@@ -93,24 +91,77 @@ function getSubject(mode) {
 				} else {
 					$('.item-subject:first').addClass("item-selected");
 				}
-				
+
 				$subjectId = $('.item-selected').attr("data-id");
 				$subjectName = $('.item-selected').attr("data-name");
 				$subjectImage = $('.item-selected').attr("data-image");
-				$subjectStatus = $('.item-selected').attr("data-status");
 				$(".panel-title").html($subjectName);
 				getItem();
 				closeLayout();
-				
+
 				$('.item-subject').click(function(e) {
 					$('.item-subject').removeClass("item-selected");
 					$(this).addClass("item-selected");
 					$subjectId = $('.item-selected').attr("data-id");
 					$subjectName = $('.item-selected').attr("data-name");
 					$subjectImage = $('.item-selected').attr("data-image");
-					$subjectStatus = $('.item-selected').attr("data-status");
 					$(".panel-title").html($subjectName);
 					getItem();
+					closeLayout();
+				});
+			}
+		}
+	});
+}
+
+// get list mode TV 
+function getListMode(mode) {
+	$.ajax({
+		type : "GET",
+		url : $pathWebService + "mode",
+		cache : false,
+		async : true,
+		data : {
+			action : 'getlistmode',
+			langid : $langId
+		},
+		success : function(response) {
+			$('#div-list-group-mode').empty();
+			if (response.length > 0) {
+				$.each(response, function(i, item) {
+					var obj = {
+						id : item.id,
+						name : unescape(item.name),
+						image : unescape(item.image),
+		
+					};
+					create_Item_Subject_HTML("div-list-group-mode", "item-mode", obj,
+							$pathMode);
+				});
+
+				if (mode == 1) {
+					$('.item-mode:last').addClass("item-selected");
+				} else if (mode == 2) {
+					$("#item-mode-" + $subjectId).addClass("item-selected");
+				} else {
+					$('.item-mode:first').addClass("item-selected");
+				}
+
+				$subjectId = $('.item-selected').attr("data-id");
+				$subjectName = $('.item-selected').attr("data-name");
+				$subjectImage = $('.item-selected').attr("data-image");
+				$(".panel-title").html($subjectName);
+				getModeItem();
+				closeLayout();
+
+				$('.item-subject').click(function(e) {
+					$('.item-subject').removeClass("item-selected");
+					$(this).addClass("item-selected");
+					$subjectId = $('.item-selected').attr("data-id");
+					$subjectName = $('.item-selected').attr("data-name");
+					$subjectImage = $('.item-selected').attr("data-image");
+					$(".panel-title").html($subjectName);
+					getModeItem();
 					closeLayout();
 				});
 			}
@@ -128,8 +179,6 @@ function openNewSubjectDialog() {
 	setValueField("subject-file-name", "");
 	setValueField("subject-old-file-name", "");
 	setValueImage("subject-image", "");
-	setValueField("subject-status", 1);
-	createStatusSubject(1);
 	$typeMode = 1;
 	$listItemIn = [];
 	createTableItemIn();
@@ -146,12 +195,10 @@ function openEditSubjectDialog() {
 		setValueField("subject-file-name", "");
 		setValueField("subject-old-file-name", $subjectImage);
 		setValueImage("subject-image", $pathLiveTV + $subjectImage);
-		setValueField("subject-status", $subjectStatus);
-		createStatusSubject($subjectStatus);
 		$typeMode = 2;
 		createTableItemIn();
 		createTableItemOut();
-	}  else {
+	} else {
 		showMessageWarning(getValueField("item-edit-fail"));
 	}
 }
@@ -160,7 +207,7 @@ function openDeleteSubjectDialog() {
 	if ($subjectId != 0) {
 		openDialog("subject-delete-dialog");
 		$("#subject-content-delete").html($subjectName);
-	}  else {
+	} else {
 		showMessageWarning(getValueField("item-delete-fail"));
 	}
 }
@@ -172,20 +219,19 @@ function createSubject(fileName) {
 		cache : false,
 		data : {
 			action : 'addnewsubject',
-			name : $("#subject-name").val(),
+			name : escape($("#subject-name").val()),
 			image : fileName,
-			status : getValueField("subject-status"),
 			listadd : createListItemInAdd()
 		},
 		success : function(response) {
 			closeDialog("subject-dialog");
 			if (response > 0) {
 				getSubject(1);
-				//showMessageSuccess(getValueField("subject-create-success"));
+				showMessageSuccess(getValueField("subject-create-success"));
 			} else {
 				showMessageError(getValueField("subject-create-fail"));
 			}
-				
+
 		}
 	});
 }
@@ -199,9 +245,8 @@ function editSubject(fileName) {
 			action : 'editsubject',
 			langid : $langId,
 			idsubject : $subjectId,
-			name : $("#subject-name").val(),
+			name : escape($("#subject-name").val()),
 			image : fileName,
-			status : getValueField("subject-status"),
 			listadd : createListItemInEdit(),
 			listremove : createListItemOutEdit()
 		},
@@ -209,7 +254,7 @@ function editSubject(fileName) {
 			closeDialog("subject-dialog");
 			if (response > 0) {
 				getSubject(2);
-				//showMessageSuccess(getValueField("subject-edit-success"));
+				showMessageSuccess(getValueField("subject-edit-success"));
 			} else {
 				showMessageError(getValueField("subject-edit-fail"));
 			}
@@ -230,7 +275,7 @@ function deleteSubject() {
 			closeDialog("subject-delete-dialog");
 			if (response > 0) {
 				getSubject(3);
-				//showMessageSuccess(getValueField("subject-delete-success"));
+				showMessageSuccess(getValueField("subject-delete-success"));
 			} else if (response == -2) {
 				showMessageError(getValueField("subject-delete-fail"));
 			} else {
@@ -242,9 +287,10 @@ function deleteSubject() {
 
 function checkErrorSubject(name) {
 	if (checkRequiredField(name)) {
-		showMessageCheck("subject-container-error", getValueField("message-subject-name"));
+		showMessageCheck("subject-container-error",
+				getValueField("message-subject-name"));
 		return false;
-	} 
+	}
 	return true;
 }
 
@@ -259,16 +305,18 @@ $(document).ready(function() {
 
 function closeLayout() {
 	$(".div-container").hide();
-	
+
 }
 
 function checkErrorSubjectCreate(name, image) {
 	if (checkRequiredField(name)) {
-		showMessageCheck("subject-container-error", getValueField("message-subject-name"));
+		showMessageCheck("subject-container-error",
+				getValueField("message-subject-name"));
 		return false;
-	} 
+	}
 	if (checkRequiredField(image)) {
-		showMessageCheck("subject-container-error", getValueField("message-image"));
+		showMessageCheck("subject-container-error",
+				getValueField("message-image"));
 		return false;
 	}
 	return true;
@@ -276,34 +324,37 @@ function checkErrorSubjectCreate(name, image) {
 
 function checkErrorSubjectEdit(name) {
 	if (checkRequiredField(name)) {
-		showMessageCheck("subject-container-error", getValueField("message-subject-name"));
+		showMessageCheck("subject-container-error",
+				getValueField("message-subject-name"));
 		return false;
-	} 
+	}
 	return true;
 }
 
 function setOutItem(idChannel) {
-	for(var i = 0; i < $listItemIn.length; i++) {
+	for (var i = 0; i < $listItemIn.length; i++) {
 		var item = $listItemIn[i];
 		if (item.idChannel == idChannel) {
 			$listItemOut.push(item);
 			$listItemIn.splice(i, 1);
 			break;
 		}
-	};
+	}
+	;
 	createTableItemIn();
 	createTableItemOut();
 }
 
 function setInItem(idChannel) {
-	for(var i = 0; i < $listItemOut.length; i++) {
+	for (var i = 0; i < $listItemOut.length; i++) {
 		var item = $listItemOut[i];
 		if (item.idChannel == idChannel) {
 			$listItemIn.push(item);
 			$listItemOut.splice(i, 1);
 			break;
 		}
-	};
+	}
+	;
 	createTableItemIn();
 	createTableItemOut();
 }
@@ -348,21 +399,4 @@ function createListItemOutEdit() {
 		}
 	}
 	return strId;
-}
-
-function changeStatusSubject() {
-	if (getValueField("subject-status") == 1) {
-		setValueField("subject-status", 0);
-		createStatusSubject(0);
-	} else {
-		setValueField("subject-status", 1);
-		createStatusSubject(1);
-	}
-}
-
-function createStatusSubject(status) {
-	var statusItem = createItemStatus(status);
-	statusItem.setAttribute("onclick", "changeStatusSubject()");
-	$("#status-subject-td").empty();
-	document.getElementById("status-subject-td").appendChild(statusItem);
 }

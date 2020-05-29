@@ -207,11 +207,6 @@
 							value="getText('welcome.backgound.back')" /></a></li>
 				<li><a href="#welcome-bg-music" data-toggle="tab"> <s:property
 							value="getText('welcome.backgound.music')" /></a></li>
-				<li><a href="#welcome-video" data-toggle="tab"> <s:property
-							value="getText('welcome.video')" /></a></li>
-				<li><a href="#welcome-birthday" data-toggle="tab"> <s:property
-							value="getText('welcome.birthday')" />
-				</a></li>
 
 			</ul>
 			<br>

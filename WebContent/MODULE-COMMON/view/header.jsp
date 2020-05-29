@@ -76,6 +76,12 @@
 								<s:property value="getText('menu.livetv')"/>
 							</a>
 						</li>
+						<li class="mng-modetv">
+							<a href="${pageContext.request.contextPath}/modetv/modetv.elcom">&nbsp;
+								<i class="fa fa-cog" aria-hidden="true" style="padding-right: 5px;"></i>
+								<s:property value="getText('menu.modetv')"/>
+							</a>
+						</li>
 						<li class="mng-ftp">
 							<a href="${pageContext.request.contextPath}/config.elcom">&nbsp;
 								<i class="fa fa-cog fa-fw" aria-hidden="true" style="padding-right: 5px;"></i>

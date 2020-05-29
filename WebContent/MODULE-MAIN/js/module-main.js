@@ -66,6 +66,11 @@ function Load_List_Main(){
 						html +='<div class="thumbnail text-center margin_thumnail_main" style="height: 150px;width: 150px;" data-id="'+item.id+'">';
 						html +='<a  href="' + getValueField("contextPath") + '/livetv/livetv.elcom">';	
 					} 
+					else if(item.id==1){
+						html +='<div class="col-md-3 mng-modetv" style="margin-bottom: 10px;">';
+						html +='<div class="thumbnail text-center margin_thumnail_main" style="height: 150px;width: 150px;" data-id="'+item.id+'">';
+						html +='<a  href="' + getValueField("contextPath") + '/modetv/modetv.elcom">';	
+					} 
 					else {
 						html +='<div class="col-md-3 mng-internet" style="margin-bottom: 10px;">';
 						html +='<div class="thumbnail text-center margin_thumnail_main" style="height: 150px;width: 150px;" data-id="'+item.id+'">';
