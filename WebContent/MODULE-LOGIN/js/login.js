@@ -32,7 +32,7 @@ function fnLogin(event) {
 	var arrUrl = url.split("/");
 //	var urlService = arrUrl[0] + "//" + arrUrl[2] + "/WSeHotelAdminHTML/";
 	var urlService = arrUrl[0] + "//" + arrUrl[2] + "/WS/";
-	var urlService="http://172.16.9.205:8888/WS/";
+	//var urlService="http://172.16.9.205:8888/WS/";
 	showLoading();
 	$.ajax({
 		type : "POST",

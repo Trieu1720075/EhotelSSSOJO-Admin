@@ -520,6 +520,12 @@ a {
 	color: white !important;
 }
 
+.content-item-mode-selected {
+	border: 1px solid red;
+	z-index: 1000 !important;
+	color: white !important;
+}
+
 .col-item,.col-item::after,.col-item::before {
 	box-sizing: content-box;
 }
@@ -529,6 +535,11 @@ a {
 }
 
 .content-item-selected,.content-item-selected::after,.content-item-selected::before
+	{
+	box-sizing: border-box !important;
+}
+
+.content-item-mode-selected,.content-item-mode-selected::after,.content-item-mode-selected::before
 	{
 	box-sizing: border-box !important;
 }

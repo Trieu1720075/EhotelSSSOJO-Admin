@@ -12,8 +12,7 @@ import elcom.ehotel.common.ActionConstant;
 import elcom.ehotel.common.UploadFile;
 import elcom.ehotel.util.ReadWriteUtils;
 
-public class UploadAction extends ActionConstant implements ActionBasic,
-		ServletRequestAware, ModelDriven<ObjectBean> {
+public class UploadAction extends ActionConstant implements ActionBasic, ServletRequestAware, ModelDriven<ObjectBean> {
 	private ObjectBean objectBean = new ObjectBean();
 	private HttpServletRequest request;
 
@@ -27,11 +26,14 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 			}
 
 			if (objectBean.getFile() != null) {
-				String filePath = ""; 
+				String filePath = "";
+				System.out.println("type image: " + objectBean.getType());
 				if (objectBean.getType().equals("1")) {
 					filePath = ReadWriteUtils.getProperty("PATH_LIVE_TV");
 				} else if (objectBean.getType().equals("2")) {
 					filePath = ReadWriteUtils.getProperty("PATH_VIDEO");
+				} else if (objectBean.getType().equals("3")) {
+					filePath = ReadWriteUtils.getProperty("PATH_MODE");
 				} else {
 					filePath = ReadWriteUtils.getProperty("PATH_MUSIC");
 				}
@@ -46,7 +48,7 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 
 		return SUCCESS;
 	}
-	
+
 	public String uploadFileCrop() {
 		try {
 			String fileName = "";
@@ -58,7 +60,7 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 			} else {
 				fileName = objectBean.getOldFileName();
 			}
-			
+
 			objectBean.setStatus("SUCCESS");
 			objectBean.setFileName(fileName);
 		} catch (Exception e) {
@@ -68,7 +70,7 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 
 		return SUCCESS;
 	}
-	
+
 	public String uploadFileVideo() {
 		try {
 			if (objectBean.getType().equals("1")) {
@@ -84,7 +86,7 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 					return SUCCESS;
 				}
 			}
-			
+
 			String fileName = "";
 			if (objectBean.getFile() != null) {
 				fileName = UploadFile.createFileName(objectBean.getFileName(), "image");
@@ -94,17 +96,17 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 			} else {
 				fileName = objectBean.getOldFileName();
 			}
-			
+
 			objectBean.setStatus("SUCCESS");
 			objectBean.setFileName(fileName);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			objectBean.setStatus("ERROR");
 		}
-		
+
 		return SUCCESS;
 	}
-	
+
 	public String uploadFileAudio() {
 		try {
 			if (objectBean.getType().equals("1")) {
@@ -126,10 +128,10 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 			System.out.println(e.getMessage());
 			objectBean.setStatus("ERROR");
 		}
-		
+
 		return SUCCESS;
 	}
-	
+
 	public String uploadFileMyHotel() {
 		try {
 			if (objectBean.getType().equals("1")) {
@@ -145,7 +147,7 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 					return SUCCESS;
 				}
 			}
-			
+
 			String fileName = "";
 			if (objectBean.getFile() != null) {
 				fileName = UploadFile.createFileName(objectBean.getFileName(), "image");
@@ -155,18 +157,18 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 			} else {
 				fileName = objectBean.getOldFileName();
 			}
-			
+
 			objectBean.setStatus("SUCCESS");
 			objectBean.setFileName(fileName);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			objectBean.setStatus("ERROR");
 		}
-		
+
 		return SUCCESS;
 	}
-	
-	public String uploadFileVideoWelcome(){
+
+	public String uploadFileVideoWelcome() {
 		try {
 			if (objectBean.getType().equals("1")) {
 				String hostServer = request.getServerName();
@@ -180,13 +182,13 @@ public class UploadAction extends ActionConstant implements ActionBasic,
 					objectBean.setStatus("ERROR");
 					return SUCCESS;
 				}
-			}	
+			}
 			objectBean.setStatus("SUCCESS");
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			objectBean.setStatus("ERROR");
 		}
-		
+
 		return SUCCESS;
 	}
 

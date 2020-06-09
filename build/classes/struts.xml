@@ -82,6 +82,11 @@
             <result name="success" type="json"></result>
         </action>
         
+        <action name="upload-file-mode" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileMode">
+            <result name="success" type="json"></result>
+        </action>
+        
         <action name="upload-file-crop" class="elcom.ehotel.action.UploadAction"
             method="uploadFileCrop">
             <result name="success" type="json"></result>
@@ -144,6 +149,7 @@
 	<include file="struts-musicvideo.xml"></include>
 	<include file="struts-music.xml"></include>
 	<include file="struts-live-tv.xml"></include>
+	<include file="struts-mode-tv.xml"></include>
 	<include file="struts-promotion.xml"></include>
 	<include file="struts-room.xml"></include>
 	<include file="struts-pms.xml"></include>

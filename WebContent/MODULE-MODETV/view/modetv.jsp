@@ -17,7 +17,7 @@
 						<div class="col-xs-12 col-sm-12 col-md-9 col-lg-12">
 							<div id="media" class="tab-pane active" role="tabpanel">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 panel panel-default">
-									<button class="btn btn-primary btn-xs" type="button" onclick="openNewDialog()" style="margin-top: 15px">
+									<button class="hidden btn btn-primary btn-xs" type="button" onclick="openNewDialog()" style="margin-top: 15px">
 										<i class="fa fa-plus-circle"></i> <s:property value="getText('button.add')"/>
 									</button>
 									<table id="table-item" class="table text-left">
@@ -102,7 +102,7 @@
 						</table>
 						<input type="hidden" id="subject-old-file-name" name="oldFileName">
 						<input type="hidden" id="subject-status" name="status">
-						<input type="hidden" name="type" value="1">
+						<input type="hidden" name="type" value="3">
 					</div>
 					<div class="col-md-4">
 						<div class="panel panel-default">
@@ -228,7 +228,7 @@
 					</table>
 					<input type="hidden" id="item-old-file-name" name="oldFileName">
 					<input type="hidden" id="item-status">
-					<input type="hidden" name="type" value="1">
+					<input type="hidden" name="type" value="3">
 					<!--
 					<input type="hidden" id="item-cropX" name="cropX">
 					<input type="hidden" id="item-cropY" name="cropY">
@@ -265,17 +265,17 @@
 
 <!--MyHotel Item Dialog -->
 <div id="myhotel-item-dialog" class="modal fade" role="dialog">
-	<form id="myhotel-item-upload-form" action="${pageContext.request.contextPath}/upload-file-myhotel.elcom" 
+	<form id="video-item-upload-form" action="${pageContext.request.contextPath}/upload-file-myhotel.elcom" 
 		method="post" enctype="multipart/form-data">
 		<div class="modal-dialog" style="width: 1000px;">
 			<!-- Modal content-->
-			<div class="modal-content">
+			<div class="modal-content" style="width: 800px;">
 				<div class="modal-header">
 					<h5 class="modal-title" id="myhotel-item-title"></h5>
 				</div>
 				<div class="modal-body">
 					<table class="tableLayout">
-						<tr>
+						<tr style="display:none;">
 							<td colspan="4">
 								<div class="input-group">
 								  	<div id="myhotel-item-container-error" class="alert alert-danger" style="display: none"></div>
@@ -283,20 +283,20 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="10%"><s:property value="getText('item.name')"/></td>
+							<td width="10%"><s:property value="getText('item.mode')"/></td>
 							<td width="40%">
-								<input type="text" name="name" id="myhotel-item-name" style="width: 100%">
+								<input type="text" name="name" id="myhotel-item-name" style="width: 100%" readonly>
 							</td>
-							<td width="10%"><s:property value="getText('item.status')"/></td>
-							<td width="40%" id="myhotel-status-td"></td>
+							<td width="10%" style="display:none;"><s:property value="getText('item.status')"/></td>
+							<td width="40%" id="myhotel-status-td" style="display:none;"></td>
 						</tr>		
 						<tr>
 							<td><s:property value="getText('item.link')"/></td>
 							<td>
 								<input type="text" name="mediaName" id="myhotel-item-link" style="width: 100%" readonly="readonly">
 							</td>
-							<td><s:property value="getText('item.image')"/></td>
-							<td>
+							<td style="display:none;"><s:property value="getText('item.image')"/></td>
+							<td style="display:none;">
 								<input type="file" name="file" id="myhotel-item-file" style="width: 100%" 
 								onchange="previewMyhotelFileImage('myhotel-item-container-error', 'myhotel-item-image', 'myhotel-item-file', 'myhotel-item-file-name', 1)">
 								<span style="color:red;font-size: 12px;">Image with width &#8805; 135px, height &#8805; 200px</span>
@@ -310,7 +310,7 @@
 								<div id="media-player" class="media-player"></div>
 							</td>
 							<td></td>
-							<td>
+							<td style="display:none;">
 								<div id="myhotel-div-item-image">
 									<img id="myhotel-item-image" alt="" src="">
 								</div>
@@ -369,8 +369,71 @@
 	</div>
 </div>
 
+<div id="video-dialog" class="modal fade" role="dialog">
+		<form id="item-upload-form-video"
+			action="${pageContext.request.contextPath}/upload-file-video-welcome.elcom"
+			method="post" enctype="multipart/form-data">
+			<div class="modal-dialog" style="width: 500px;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="item-title-video"></h5>
+					</div>
+					<div class="modal-body">
+						<table class="tableLayout">
+							<tr>
+								<td colspan="6">
+									<div class="input-group">
+										<div id="item-container-error-video"
+											class="alert alert-danger" style="display: none"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td><s:property value="getText('item.name')" /></td>
+								<td><input type="text" name="name" id="item-name-video"
+									style="width: 100%"></td>
+							</tr>
+							<tr>
+								<td width="10%"><s:property value="getText('item.status')" /></td>
+								<td width="15%" id="status-td-video"></td>
+							</tr>
+							<tr>
+								<td><s:property value="getText('item.link')" /></td>
+								<td><input type="text" name="mediaName"
+									id="item-link-video" style="width: 100%" readonly="readonly">
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<div id="container-ftp-video" class="container-ftp"></div>
+									<div id="media-player-video" class="media-player"></div>
+								</td>
+							</tr>
+						</table>
+						<input type="hidden" id="item-status-video" name="status">
+						<input type="hidden" id="item-host-video" name="host"> <input
+							type="hidden" id="item-port-video" name="port"> <input
+							type="hidden" id="item-user-video" name="user"> <input
+							type="hidden" id="item-pass-video" name="pass"> <input
+							type="hidden" id="item-type-video" name="type"> <input
+							type="hidden" id="item-path-video" name="mediaPath"> <input
+							type="hidden" id="item-index-video" name="item-index">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-sm btn-primary btn-save"></button>
+						<button type="button" class="btn btn-sm btn-danger"
+							onclick="closeDialogItemVideo()">
+							<s:property value="getText('button.cancel')" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 
 
 <script src="${pageContext.request.contextPath}/MODULE-MODETV/js/subject.js"></script>
 <script src="${pageContext.request.contextPath}/MODULE-MODETV/js/item.js"></script>
-<script src="${pageContext.request.contextPath}/MODULE-MODETV/js/myhotel.js"></script>
+<script src="${pageContext.request.contextPath}/MODULE-MODETV/js/module-video.js"></script>

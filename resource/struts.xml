@@ -82,6 +82,11 @@
             <result name="success" type="json"></result>
         </action>
         
+        <action name="upload-file-mode" class="elcom.ehotel.action.UploadAction"
+            method="uploadFileMode">
+            <result name="success" type="json"></result>
+        </action>
+        
         <action name="upload-file-crop" class="elcom.ehotel.action.UploadAction"
             method="uploadFileCrop">
             <result name="success" type="json"></result>

@@ -60,6 +60,61 @@ $(function() {
 	});
 });
 
+$(function() {
+	$("#item-mode-upload-form").submit(function() {
+		var name = getValueField("item-name-mode");
+		var address = getValueField("item-address-mode");
+		var content = getValueField("item-file-name-mode");
+		var index = getValueField("item-idx-mode");
+		if ($typeMode == 1 && !checkErrorItemCreate(name, address, content, index)) {
+			return false;
+		} else if ($typeMode == 2 && !checkErrorItemEdit(name, address, index)) {
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+	var bar = $('.progress-bar');
+	var percent = $('.progress-percent');
+	
+	$("#item-mode-upload-form").ajaxForm({
+	    beforeSend: function() {
+	    	var file =  document.getElementById("item-file-mode").files[0]; 
+	    	if (file != null) {
+	    		$(".process-upload").show();
+	    	}
+	        var percentVal = '0%';
+	        bar.width(percentVal);
+	        percent.html(percentVal);
+	    },
+	    uploadProgress: function(event, position, total, percentComplete) {
+	        var percentVal = percentComplete + '%';
+	        bar.width(percentVal);
+	        percent.html(percentVal + " " + getValueField("item-uploading"));
+	        if (percentComplete == 100) {
+	 	        percent.html(percentVal + " " + getValueField("item-saving"));
+	        }
+	    },
+	    success: function(response) {
+	        var percentVal = '100%';
+	        bar.width(percentVal);
+	        percent.html(percentVal + " " + getValueField("item-complete"));
+	        
+	        if (response.status == 'SUCCESS') {
+        		if ($typeMode == 1) {
+					createItem(response.fileName);
+				} else {
+					editModeItem(response.fileName);
+				}
+			} else {
+				closeDialog("item-dialog");
+				showMessageError(getValueField("item-upload-fail"));
+			}
+	    }
+	});
+});
+
 function getItem() {
 	$.ajax({
 		type : "GET",
@@ -86,7 +141,7 @@ function getModeItem() {
 		cache : false,
 		data : {
 			action : "getchannelmode",
-			id : -1,
+			id : $modeId,
 		},
 		success : function(response) {
 			resetDataTable("table-item-mode");
@@ -200,7 +255,7 @@ function createTableModeItem(data) {
 		
 		var col7 = row.insertCell(6);
 		var btnEdit = createButton(1);
-		btnEdit.setAttribute("onclick", "openEditDialog('" + id + "','" + name + "', '" + link + "', '" + image + "', '" + status + "', '" + idx + "')");
+		btnEdit.setAttribute("onclick", "openEditModeDialog('" + id + "','" + name + "', '" + link + "', '" + image + "', '" + status + "', '" + idx + "')");
 		var btnDelete = createButton(2);
 		btnDelete.setAttribute("onclick", "openDeleteDialog('" + id + "', '" + name + "')");
 		col7.appendChild(btnEdit);
@@ -247,6 +302,8 @@ function changeStatusData(id,name,link,image,status,idx){
 		cache : false,
 		data : {
 			action : 'editchannel',
+			idsubject: $subjectId,
+			type: "CHANNEL",
 			idchannel : id,
 			name : name,
 			link : link,
@@ -281,7 +338,7 @@ function changeStatusModeData(id,name,link,image,status,idx){
 		cache : false,
 		data : {
 			action : 'changestatus',
-			modeid : "-1",
+			modeid : $modeId,
 			channelid : id,
 			status : status,
 			langid: $langId,
@@ -396,6 +453,28 @@ function openEditDialog(id, name, link, image, status, idx) {
 	$typeMode = 2;
 }
 
+function openEditModeDialog(id, name, link, image, status, idx) {
+	openDialog("item-mode-dialog");
+	//destroyCropImage("item-image");
+	$(".process-upload").hide();
+	closeMessageCheck("item-mode-container-error");
+	$("#item-title").html(getValueField("livetv-edit-title"));
+	setValueField("item-name-mode", name);
+	setValueField("item-address-mode", link);
+	setValueField("item-idx-mode", idx);
+	setValueField("item-file-mode", "");
+	setValueField("item-file-name-mode", "");
+	setValueField("item-old-file-name-mode", image);
+	setValueImage("item-image-mode", $pathLiveTV + image);
+	setValueField("item-status-mode", status);
+	createModeStatus(status);
+	$(".btn-save").html(getValueField("btn-save"));
+	$("#div-item-image-mode").attr("style", "width:150px; height:150px");
+	$("#item-image-mode").attr("style", "width:150px; height:150px");
+	$itemId = id;
+	$typeMode = 2;
+}
+
 function openDeleteDialog(id, name) {
 	openDialog("item-delete-dialog");
 	$("#item-delete").html(name);
@@ -422,6 +501,33 @@ function createItem(fileName) {
 			closeDialog("item-dialog");
 			if (response > 0) {
 				getItem();
+				//showMessageSuccess(getValueField("livetv-create-success"));
+			} else {
+				showMessageError(getValueField("livetv-create-fail"));
+			}
+		}
+	});
+}
+
+function createModeItem(fileName) {
+	$.ajax({
+		type : "POST",
+		url : $pathWebService + "livetv",
+		cache : false,
+		data : {
+			action : 'addnewchannel',
+			idsubject : $modeId,
+			name : getValueField("item-name-mode"),
+			link : getValueField("item-address-mode"),
+			index : getValueField("item-idx-mode"),
+			image : fileName,
+			status : getValueField("item-status-mode"),
+			language : 'VN',
+			subtitle : ''
+		},
+		success : function(response) {
+			closeDialog("item-dialog");
+			if (response > 0) {
 				getModeItem();
 				//showMessageSuccess(getValueField("livetv-create-success"));
 			} else {
@@ -431,13 +537,22 @@ function createItem(fileName) {
 	});
 }
 
+
+
 function editItem(fileName) {
+	var sub = document.getElementById("listsubject");
+	var value = sub.options[sub.selectedIndex].value;
+	if (value != $subjectId){
+		$subjectId = value
+	}
 	$.ajax({
 		type : "POST",
 		url : $pathWebService + "livetv",
 		cache : false,
 		data : {
 			action : 'editchannel',
+			type : "CHANNEL",
+			idsubject : $subjectId,
 			idchannel : $itemId,
 			name : getValueField("item-name"),
 			link : getValueField("item-address"),
@@ -451,6 +566,41 @@ function editItem(fileName) {
 			closeDialog("item-dialog");
 			if (response > 0) {
 				getItem();
+				//showMessageSuccess(getValueField("livetv-edit-success"));
+			} else {
+				showMessageError(getValueField("livetv-edit-fail"));
+			}
+		}
+	});
+}
+
+function editModeItem(fileName) {
+	var sub = document.getElementById("listmode");
+	var value = sub.options[sub.selectedIndex].value;
+	if (value != $modeId){
+		$modeId = value
+	}
+	$.ajax({
+		type : "POST",
+		url : $pathWebService + "livetv",
+		cache : false,
+		data : {
+			action : 'editchannel',
+			type : "MODE",
+			idsubject : $modeId,
+			idchannel : $itemId,
+			name : getValueField("item-name-mode"),
+			link : getValueField("item-address-mode"),
+			index : getValueField("item-idx-mode"),
+			image : fileName,
+			status : getValueField("item-status-mode"),
+			language : 'VN',
+			subtitle : ''
+		},
+		success : function(response) {
+			closeDialog("item-mode-dialog");
+			if (response > 0) {
+				
 				getModeItem();
 				//showMessageSuccess(getValueField("livetv-edit-success"));
 			} else {
@@ -543,4 +693,21 @@ function createStatus(status) {
 	statusItem.setAttribute("onclick", "changeStatus()");
 	$("#status-td").empty();
 	document.getElementById("status-td").appendChild(statusItem);
+}
+
+function changeModeStatus() {
+	if (getValueField("item-status-mode") == 0) {
+		setValueField("item-status-mode", 1);
+		createModeStatus(1);
+	} else {
+		setValueField("item-status-mode", 0);
+		createModeStatus(0);
+	}
+}
+
+function createModeStatus(status) {
+	var statusItem = createItemStatus(status);
+	statusItem.setAttribute("onclick", "changeModeStatus()");
+	$("#status-td-mode").empty();
+	document.getElementById("status-td-mode").appendChild(statusItem);
 }

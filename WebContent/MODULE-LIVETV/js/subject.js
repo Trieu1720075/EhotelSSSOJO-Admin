@@ -1,4 +1,5 @@
 var $subjectId = 0;
+var $modeId = 0;
 var $subjectName = "";
 var $subjectImage = "";
 var $typeMode = 0;
@@ -80,6 +81,15 @@ function getSubject(mode) {
 						index : item.oderby,
 						modifyDate : item.modifyDate
 					};
+					var listsubject = document.getElementById("listsubject");
+					var option = document.createElement("option");
+					option.text = obj.name;
+					option.value = obj.id;
+					try {
+						listsubject.add(option, null); //Standard 
+					}catch(error) {
+						listsubject.add(option); // IE only
+					}
 					createItemList("div-list-group", "item-subject", obj,
 							$pathLiveTV);
 				});
@@ -135,31 +145,40 @@ function getListMode(mode) {
 						image : unescape(item.image),
 		
 					};
-					create_Item_Subject_HTML("div-list-group-mode", "item-mode", obj,
+					var listmode = document.getElementById("listmode");
+					var option = document.createElement("option");
+					option.text = obj.name;
+					option.value = obj.id;
+					try {
+						listmode.add(option, null); //Standard 
+					}catch(error) {
+						listmode.add(option); // IE only
+					}
+					createItemList("div-list-group-mode", "item-mode", obj,
 							$pathMode);
 				});
-
+				
 				if (mode == 1) {
-					$('.item-mode:last').addClass("item-selected");
+					$('.item-mode:last').addClass("item-mode-selected");
 				} else if (mode == 2) {
-					$("#item-mode-" + $subjectId).addClass("item-selected");
+					$("#item-mode-" + $modeId).addClass("item-mode-selected");
 				} else {
-					$('.item-mode:first').addClass("item-selected");
+					$('.item-mode:first').addClass("item-mode-selected");
 				}
 
-				$subjectId = $('.item-selected').attr("data-id");
-				$subjectName = $('.item-selected').attr("data-name");
-				$subjectImage = $('.item-selected').attr("data-image");
+				$modeId = $('.item-mode-selected').attr("data-id");
+				$subjectName = $('.item-mode-selected').attr("data-name");
+				$subjectImage = $('.item-mode-selected').attr("data-image");
 				$(".panel-title").html($subjectName);
 				getModeItem();
 				closeLayout();
 
-				$('.item-subject').click(function(e) {
-					$('.item-subject').removeClass("item-selected");
-					$(this).addClass("item-selected");
-					$subjectId = $('.item-selected').attr("data-id");
-					$subjectName = $('.item-selected').attr("data-name");
-					$subjectImage = $('.item-selected').attr("data-image");
+				$('.item-mode').click(function(e) {
+					$('.item-mode').removeClass("item-mode-selected");
+					$(this).addClass("item-mode-selected");
+					$modeId = $('.item-mode-selected').attr("data-id");
+					$subjectName = $('.item-mode-selected').attr("data-name");
+					$subjectImage = $('.item-mode-selected').attr("data-image");
 					$(".panel-title").html($subjectName);
 					getModeItem();
 					closeLayout();

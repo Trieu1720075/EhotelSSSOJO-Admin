@@ -4,6 +4,7 @@ var $listItemIn = [];
 var $listItemOut = [];
 var $status = 1;
 var $maxIndex = 0;
+var $image = "";
 
 $(function() {
 	$("#item-upload-form").submit(function() {
@@ -59,6 +60,120 @@ $(function() {
 	});
 });
 
+$(function() {
+	$("#video-item-upload-form").submit(function() {
+		var name = getValueField("myhotel-item-name");
+		var address = getValueField("myhotel-item-link");
+		var content = $image;
+		if ($typeMode == 1 && !checkErrorItemCreate(name, address, content)) {
+			return false;
+		} else if ($typeMode == 2 && !checkErrorItemEdit(name, address)) {
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+	var bar = $('.progress-bar');
+	var percent = $('.progress-percent');
+	
+	$("#video-item-upload-form").ajaxForm({
+	    beforeSend: function() {
+	    	var file =  document.getElementById("item-file").files[0]; 
+	    	if (file != null) {
+	    		$(".process-upload").show();
+	    	}
+	        var percentVal = '0%';
+	        bar.width(percentVal);
+	        percent.html(percentVal);
+	    },
+	    uploadProgress: function(event, position, total, percentComplete) {
+	        var percentVal = percentComplete + '%';
+	        bar.width(percentVal);
+	        percent.html(percentVal + " " + getValueField("item-uploading"));
+	        if (percentComplete == 100) {
+	 	        percent.html(percentVal + " " + getValueField("item-saving"));
+	        }
+	    },
+	    success: function(response) {
+	        var percentVal = '100%';
+	        bar.width(percentVal);
+	        percent.html(percentVal + " " + getValueField("item-complete"));
+	        
+	        if (response.status == 'SUCCESS') {
+        		if ($typeMode == 1) {
+					createItem(response.fileName);
+				} else {
+					createItemVideo(response.mediaName)
+					editVideo(response.mediaName);
+				}
+			} else {
+				closeDialog("item-dialog");
+				showMessageError(getValueField("item-upload-fail"));
+			}
+	    }
+	});
+});
+
+function getConfig() {
+	$checkAjaxShow = true;
+	$.ajax({
+		type : "GET",
+		url : $pathWebService + "configftp",
+		cache : false,
+		data : {
+			action : "getconfig"
+		},
+		success : function(response) {
+			var item = response;
+			setValueField("item-host", item.host);
+			setValueField("item-port", item.port);
+			setValueField("item-user", item.user);
+			setValueField("item-pass", item.pass);
+			getListFile();
+		}
+	});
+}
+
+function getListFile() {
+	$
+			.ajax({
+				type : "GET",
+				url : $pathWebService + "configftp",
+				cache : false,
+				timeout : 3000,
+				data : {
+					action : "getlistfile",
+					type : 'video'
+				},
+				success : function(response) {
+					$("#container-ftp").empty();
+					if (response.length == 0) {
+						$("#container-ftp").append(
+								getValueField("message-file-empty"));
+					}
+					$
+							.each(
+									response,
+									function(i, item) {
+										var temp = '<div class="item-ftp" data-path="'
+												+ item.path
+												+ '" data-name="'
+												+ item.filename
+												+ '" onclick="chooseFileFTP(this)"><img src="../MODULE-COMMON/images/icons/ic_file.gif" height="16px" width="16px"><span>'
+												+ item.filename
+												+ '</span></div>';
+										$("#container-ftp").append(temp);
+									});
+				},
+				error : function() {
+					$("#container-ftp").empty();
+					$("#container-ftp").append(
+							getValueField("message-file-empty"));
+				}
+			});
+}
+
 function getItem() {
 	$.ajax({
 		type : "GET",
@@ -91,8 +206,7 @@ function createTableItem(data) {
 		var id = item.id;
 		var name = unescape(item.name);
 		var video = unescape(item.video);
-		//var image = item.image;
-		var image = "1.jpg";
+		var image = item.image;
 		var status = item.status;
 		
 		var row = myBody.insertRow(myBody.rows.length);
@@ -117,7 +231,7 @@ function createTableItem(data) {
 		var btnDelete = createButton(2);
 		btnDelete.setAttribute("onclick", "openDeleteDialog('" + id + "', '" + name + "')");
 		var btnEditVideo = createButton(4);
-		btnEditVideo.setAttribute("onclick", "openMyhotelNewDialog()");
+		btnEditVideo.setAttribute("onclick", "openCreateVideoDialog('" + id + "','" + name + "', '" + video + "', '" + image + "', '" + status + "')");
 		col6.appendChild(btnEdit);
 		col6.appendChild(btnDelete);
 		col6.appendChild(btnEditVideo);
@@ -287,6 +401,65 @@ function openEditDialog(id, name, video, image, status) {
 	$typeMode = 2;
 }
 
+function openCreateVideoDialog(id, name, video, image, status) {
+	openDialog("myhotel-item-dialog");
+	getConfig();
+	destroyCropImage("myhotel-item-image");
+	$(".process-upload").hide();
+	$("#container-ftp").show();
+	$("#media-player").hide();
+	closeMessageCheck("myhotel-item-container-error");
+	$("#myhotel-item-title").html('Edit Mode Video');
+	setValueField("myhotel-item-name", name);
+	setValueField("myhotel-item-link", "");
+	setValueField("myhotel-item-file", "");
+	setValueField("myhotel-item-file-name", "");
+	setValueField("myhotel-item-old-file-name", "");
+	setValueImage("myhotel-item-image", image);
+	setValueField("myhotel-item-status", status);
+	createMyhotelStatus(status);
+	setValueField("item-type", 1);
+	$(".btn-save").html(getValueField("btn-create"));
+	$typeMode = 2;
+	$itemId = id;
+	$image = image;
+}
+
+function createItemVideo(mediaName) {
+	$.ajax({
+		type : "POST",
+		url : $pathWebService + "system",
+		cache : false,
+		data : {
+			action : 'addwelcomemedia',			
+			name : getValueField("item-name-video"),
+			filename : mediaName,
+			type : "VIDEO"
+		},
+		success : function(response) {
+			if (response > 0) {
+				showMessageSuccess("Upload Video Success");
+			} else {
+				showMessageError(getValueField("Upload Video Fail"));
+			}
+		}
+	});
+}
+
+function chooseFileFTP(obj) {
+	var name = $(obj).attr("data-name");
+	var path = $(obj).attr("data-path");
+	setValueField("myhotel-item-link", name);
+	setValueField("myhotel-item-path", path);
+}
+
+function createMyhotelStatus(status) {
+	var statusItem = createItemStatus(status);
+	statusItem.setAttribute("onclick", "changeMyhotelStatus()");
+	$("#myhotel-status-td").empty();
+	document.getElementById("myhotel-status-td").appendChild(statusItem);
+}
+
 function openDeleteDialog(id, name) {
 	openDialog("item-delete-dialog");
 	$("#item-delete").html(name);
@@ -347,6 +520,32 @@ function editItem(fileName) {
 	});
 }
 
+function editVideo(fileName) {
+	$.ajax({
+		type : "POST",
+		url : $pathWebService + "mode",
+		cache : false,
+		data : {
+			action : 'editmode',
+			id : $itemId,
+			name : getValueField("myhotel-item-name"),
+			video : fileName,
+			image : $image,
+			status : getValueField("myhotel-item-status"),
+			langid : $langId,
+		},
+		success : function(response) {
+			closeDialog("myhotel-item-dialog");
+			if (response > 0) {
+				getItem();
+				//showMessageSuccess(getValueField("livetv-edit-success"));
+			} else {
+				showMessageError(getValueField("modetv-edit-fail"));
+			}
+		}
+	});
+}
+
 function deleteItem() {
 	$.ajax({
 		type : "POST",
@@ -368,6 +567,11 @@ function deleteItem() {
 			}
 		}
 	});
+}
+
+function closeDialogItem() {
+	closeDialog("myhotel-item-dialog");
+	$("#media-player").empty();
 }
 
 function checkErrorItemCreate(name, address, content) {

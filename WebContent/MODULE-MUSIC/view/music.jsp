@@ -126,7 +126,7 @@
 					</table>
 					<input type="hidden" id="subject-old-file-name" name="oldFileName">
 					<input type="hidden" id="subject-status" name="status">
-					<input type="hidden" name="type" value="3">
+					<input type="hidden" name="type" value="4">
 				</div>
 				<div class="modal-footer">	
 					<button type="submit" class="btn btn-sm btn-primary btn-save"></button>
